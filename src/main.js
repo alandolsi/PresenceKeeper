@@ -8,6 +8,8 @@ let schedulerTimer = null;
 let lastScheduleActionKey = null;
 let tray = null;
 let isQuitting = false;
+let trayBlinkTimer = null;
+let trayBlinkOn = true;
 const startHidden = process.argv.includes('--hidden');
 
 const state = {
@@ -27,6 +29,7 @@ function sendState() {
     mainWindow.webContents.send('state:update', state);
   }
   refreshTrayMenu();
+  refreshTrayIcon();
 }
 
 function log(message) {
@@ -121,12 +124,37 @@ function refreshTrayMenu() {
   tray.setContextMenu(menu);
 }
 
+function refreshTrayIcon() {
+  if (!tray) return;
+  if (trayBlinkTimer) {
+    clearInterval(trayBlinkTimer);
+    trayBlinkTimer = null;
+  }
+
+  const runningPath = path.join(app.getAppPath(), 'build', 'tray-running.png');
+  const runningBlinkPath = path.join(app.getAppPath(), 'build', 'tray-running-blink.png');
+  const stoppedPath = path.join(app.getAppPath(), 'build', 'tray-stopped.png');
+
+  if (!state.running) {
+    tray.setImage(stoppedPath);
+    return;
+  }
+
+  trayBlinkOn = true;
+  tray.setImage(runningPath);
+  trayBlinkTimer = setInterval(() => {
+    trayBlinkOn = !trayBlinkOn;
+    tray.setImage(trayBlinkOn ? runningPath : runningBlinkPath);
+  }, 700);
+}
+
 function createTray() {
   if (tray) return;
-  tray = new Tray(path.join(app.getAppPath(), 'build', 'icon.ico'));
+  tray = new Tray(path.join(app.getAppPath(), 'build', 'tray-stopped.png'));
   tray.setToolTip('PresenceKeeper');
   tray.on('double-click', () => openMainWindow());
   refreshTrayMenu();
+  refreshTrayIcon();
 }
 
 function parseWorkerLine(line) {
@@ -266,5 +294,6 @@ app.on('before-quit', () => {
   isQuitting = true;
   if (schedulerTimer) clearInterval(schedulerTimer);
   if (workerProcess) workerProcess.kill();
+  if (trayBlinkTimer) clearInterval(trayBlinkTimer);
   if (tray) tray.destroy();
 });

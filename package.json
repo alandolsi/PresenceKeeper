@@ -22,13 +22,14 @@
     "automation"
   ],
   "scripts": {
+    "tray:icons": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build/generate-tray-icons.ps1",
     "icons:sync": "node ./scripts/sync-icons.mjs",
     "css:build": "tailwindcss -c tailwind.config.js -i ./src/renderer/tailwind.input.css -o ./src/renderer/tailwind.css --minify",
-    "predev": "npm run icons:sync && npm run css:build",
+    "predev": "npm run tray:icons && npm run icons:sync && npm run css:build",
     "dev": "electron .",
-    "prebuild": "npm run icons:sync && npm run css:build",
+    "prebuild": "npm run tray:icons && npm run icons:sync && npm run css:build",
     "build": "electron-builder --dir",
-    "predist": "npm run icons:sync && npm run css:build",
+    "predist": "npm run tray:icons && npm run icons:sync && npm run css:build",
     "dist": "electron-builder"
   },
   "devDependencies": {
@@ -47,6 +48,7 @@
       "src/**/*",
       "worker/**/*",
       "build/icon.ico",
+      "build/tray-*.png",
       "package.json"
     ],
     "directories": {
