@@ -1,0 +1,33 @@
+{
+  "name": "presencekeeper",
+  "version": "0.1.0",
+  "description": "Windows desktop app to simulate periodic activity with start/stop and scheduling.",
+  "main": "src/main.js",
+  "author": "Landolsi Webdesign <info@landolsi.de> (https://landolsi.de)",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron .",
+    "build": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "de.landolsi.presencekeeper",
+    "productName": "PresenceKeeper",
+    "files": [
+      "src/**/*",
+      "worker/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

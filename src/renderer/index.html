@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PresenceKeeper</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>PresenceKeeper</h1>
+    <p class="subtitle">Desktop activity scheduler for Windows</p>
+
+    <section class="card">
+      <h2>Runtime</h2>
+      <div class="row">
+        <label for="interval">Interval (seconds)</label>
+        <input id="interval" type="number" min="30" max="900" value="240" />
+      </div>
+      <div class="buttons">
+        <button id="startBtn">Start</button>
+        <button id="stopBtn" class="secondary">Stop</button>
+      </div>
+      <div class="meta">
+        <div>Status: <strong id="status">Stopped</strong></div>
+        <div>Next tick in: <strong id="countdown">-</strong></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Daily Schedule</h2>
+      <div class="row checkbox-row">
+        <label><input id="scheduleEnabled" type="checkbox" /> Enable schedule</label>
+      </div>
+      <div class="row">
+        <label for="startTime">Start time</label>
+        <input id="startTime" type="time" value="08:30" />
+      </div>
+      <div class="row">
+        <label for="stopTime">Stop time</label>
+        <input id="stopTime" type="time" value="17:30" />
+      </div>
+      <div class="buttons">
+        <button id="saveScheduleBtn">Save Schedule</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Log</h2>
+      <pre id="log" class="log"></pre>
+    </section>
+  </main>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
