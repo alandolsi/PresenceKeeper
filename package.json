@@ -1,6 +1,6 @@
 {
   "name": "presencekeeper",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Windows desktop app to simulate periodic activity with start/stop and scheduling.",
   "main": "src/main.js",
   "icon": "build/icon.ico",
