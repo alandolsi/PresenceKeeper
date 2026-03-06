@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron');
 const path = require('node:path');
 const { spawn } = require('node:child_process');
 
@@ -6,6 +6,8 @@ let mainWindow;
 let workerProcess = null;
 let schedulerTimer = null;
 let lastScheduleActionKey = null;
+let tray = null;
+let isQuitting = false;
 
 const state = {
   running: false,
@@ -22,6 +24,7 @@ function sendState() {
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.webContents.send('state:update', state);
   }
+  refreshTrayMenu();
 }
 
 function log(message) {
@@ -43,6 +46,65 @@ function createWindow() {
   });
 
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'index.html'));
+
+  mainWindow.on('close', (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      mainWindow.hide();
+      log('Window hidden to tray. Use tray icon to reopen.');
+    }
+  });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+}
+
+function openMainWindow() {
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    createWindow();
+  }
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore();
+  }
+  mainWindow.show();
+  mainWindow.focus();
+}
+
+function refreshTrayMenu() {
+  if (!tray) return;
+  const menu = Menu.buildFromTemplate([
+    { label: `Status: ${state.running ? 'Running' : 'Stopped'}`, enabled: false },
+    { type: 'separator' },
+    {
+      label: 'Start',
+      enabled: !state.running,
+      click: () => startWorker(state.intervalSeconds)
+    },
+    {
+      label: 'Stop',
+      enabled: state.running,
+      click: () => stopWorker()
+    },
+    { type: 'separator' },
+    { label: 'Open', click: () => openMainWindow() },
+    {
+      label: 'Exit',
+      click: () => {
+        isQuitting = true;
+        app.quit();
+      }
+    }
+  ]);
+  tray.setContextMenu(menu);
+}
+
+function createTray() {
+  if (tray) return;
+  tray = new Tray(path.join(app.getAppPath(), 'build', 'icon.ico'));
+  tray.setToolTip('PresenceKeeper');
+  tray.on('double-click', () => openMainWindow());
+  refreshTrayMenu();
 }
 
 function parseWorkerLine(line) {
@@ -137,6 +199,7 @@ function scheduleLoop() {
 app.whenReady().then(() => {
   app.setAppUserModelId('de.landolsi.presencekeeper');
   createWindow();
+  createTray();
   schedulerTimer = setInterval(scheduleLoop, 1000);
 
   ipcMain.handle('state:get', () => state);
@@ -166,10 +229,13 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  // Keep app alive in tray on Windows/Linux.
+  if (process.platform === 'darwin') app.quit();
 });
 
 app.on('before-quit', () => {
+  isQuitting = true;
   if (schedulerTimer) clearInterval(schedulerTimer);
   if (workerProcess) workerProcess.kill();
+  if (tray) tray.destroy();
 });

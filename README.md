@@ -47,6 +47,8 @@ npm run dev
 - Click `START` (round button).
 - Verify status changes to `Running` and countdown decreases.
 - Click `STOP` and verify status returns to `Stopped`.
+- Close the window and verify the app stays in system tray.
+- Reopen using tray icon double-click or tray menu `Open`.
 3. Schedule test:
 - Enable schedule.
 - Set start to 1-2 minutes from now and stop to 3-4 minutes from now.
