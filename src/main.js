@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, shell } = require('electron');
 const path = require('node:path');
 const { spawn } = require('node:child_process');
 
@@ -157,6 +157,22 @@ function createTray() {
   refreshTrayIcon();
 }
 
+function createAppMenu() {
+  const template = [
+    {
+      label: 'Help',
+      submenu: [
+        { label: 'Kontaktseite', click: () => shell.openExternal('https://landolsi.de') },
+        { label: 'E-Mail schreiben', click: () => shell.openExternal('mailto:info@landolsi.de?subject=PresenceKeeper%20Support') },
+        { type: 'separator' },
+        { label: 'GitHub Repository', click: () => shell.openExternal('https://github.com/alandolsi/PresenceKeeper') }
+      ]
+    }
+  ];
+  const appMenu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(appMenu);
+}
+
 function parseWorkerLine(line) {
   try {
     const event = JSON.parse(line);
@@ -251,6 +267,7 @@ app.whenReady().then(() => {
   if (process.platform === 'win32') {
     state.autoStartEnabled = app.getLoginItemSettings().openAtLogin;
   }
+  createAppMenu();
   createWindow();
   createTray();
   schedulerTimer = setInterval(scheduleLoop, 1000);
