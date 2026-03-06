@@ -61,8 +61,7 @@
             "x64"
           ]
         }
-      ],
-      "publisherName": "Landolsi Webdesign"
+      ]
     },
     "nsis": {
       "oneClick": false,

@@ -8,11 +8,13 @@ let schedulerTimer = null;
 let lastScheduleActionKey = null;
 let tray = null;
 let isQuitting = false;
+const startHidden = process.argv.includes('--hidden');
 
 const state = {
   running: false,
   intervalSeconds: 240,
   nextTickAt: null,
+  autoStartEnabled: false,
   schedule: {
     enabled: false,
     startTime: '08:30',
@@ -37,6 +39,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 860,
     height: 680,
+    show: !startHidden,
     icon: path.join(app.getAppPath(), 'build', 'icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -58,6 +61,25 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+}
+
+function setAutoStart(enabled) {
+  const on = !!enabled;
+  try {
+    if (process.platform === 'win32') {
+      app.setLoginItemSettings({
+        openAtLogin: on,
+        path: process.execPath,
+        args: ['--hidden']
+      });
+    }
+    state.autoStartEnabled = on;
+    sendState();
+    log(`Auto-start ${on ? 'enabled' : 'disabled'}.`);
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, message: error.message };
+  }
 }
 
 function openMainWindow() {
@@ -198,6 +220,9 @@ function scheduleLoop() {
 
 app.whenReady().then(() => {
   app.setAppUserModelId('de.landolsi.presencekeeper');
+  if (process.platform === 'win32') {
+    state.autoStartEnabled = app.getLoginItemSettings().openAtLogin;
+  }
   createWindow();
   createTray();
   schedulerTimer = setInterval(scheduleLoop, 1000);
@@ -221,6 +246,10 @@ app.whenReady().then(() => {
     sendState();
     log(`Schedule updated: ${state.schedule.enabled ? 'enabled' : 'disabled'} (${state.schedule.startTime} - ${state.schedule.stopTime}).`);
     return { ok: true };
+  });
+
+  ipcMain.handle('autostart:set', (_event, enabled) => {
+    return setAutoStart(enabled);
   });
 
   app.on('activate', () => {

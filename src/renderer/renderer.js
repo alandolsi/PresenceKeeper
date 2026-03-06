@@ -6,6 +6,7 @@ const logEl = document.getElementById('log');
 const intervalEl = document.getElementById('interval');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
+const autoStartEnabledEl = document.getElementById('autostartEnabled');
 
 const scheduleEnabledEl = document.getElementById('scheduleEnabled');
 const startTimeEl = document.getElementById('startTime');
@@ -24,6 +25,7 @@ function renderState(state) {
   statusEl.textContent = state.running ? 'Running' : 'Stopped';
   statusDotEl.className = state.running ? 'h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.85)]' : 'h-2.5 w-2.5 rounded-full bg-slate-500';
   intervalEl.value = state.intervalSeconds;
+  autoStartEnabledEl.checked = !!state.autoStartEnabled;
   scheduleEnabledEl.checked = !!state.schedule.enabled;
   startTimeEl.value = state.schedule.startTime;
   stopTimeEl.value = state.schedule.stopTime;
@@ -64,6 +66,11 @@ saveScheduleBtn.addEventListener('click', async () => {
     stopTime: stopTimeEl.value
   });
   if (!res.ok) appendLog(`Schedule save failed: ${res.message}`);
+});
+
+autoStartEnabledEl.addEventListener('change', async () => {
+  const res = await window.presenceApi.setAutoStart(autoStartEnabledEl.checked);
+  if (!res.ok) appendLog(`Auto-start save failed: ${res.message}`);
 });
 
 window.presenceApi.onStateUpdate(renderState);

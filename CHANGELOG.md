@@ -11,6 +11,7 @@ This project adheres to Semantic Versioning.
 - Modernized control-center UI with round Start/Stop buttons.
 - GitHub release workflow for tagged installer publishing.
 - System tray mode with Open/Start/Stop/Exit actions.
+- Windows auto-start toggle in UI using Electron login item settings.
 
 ### Changed
 - Replaced legacy renderer stylesheet with Tailwind-based styles.
