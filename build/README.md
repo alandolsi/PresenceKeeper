@@ -1,6 +1,13 @@
 # Build Assets
 
-Place the Windows app icon here as `icon.ico` for branded installers.
+Windows app icon assets for PresenceKeeper.
 
-Expected path:
-- `build/icon.ico`
+Files:
+- `build/icon.ico` (used by Electron and NSIS installer)
+- `build/icon-256.png` (source preview image)
+- `build/generate-icon.ps1` (regenerates both icon files)
+
+Regenerate icon:
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build\generate-icon.ps1
+```

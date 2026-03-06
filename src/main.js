@@ -34,6 +34,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 860,
     height: 680,
+    icon: path.join(app.getAppPath(), 'build', 'icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -134,6 +135,7 @@ function scheduleLoop() {
 }
 
 app.whenReady().then(() => {
+  app.setAppUserModelId('de.landolsi.presencekeeper');
   createWindow();
   schedulerTimer = setInterval(scheduleLoop, 1000);
 

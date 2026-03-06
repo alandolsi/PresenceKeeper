@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Windows desktop app to simulate periodic activity with start/stop and scheduling.",
   "main": "src/main.js",
+  "icon": "build/icon.ico",
   "author": "Landolsi Webdesign <info@landolsi.de> (https://landolsi.de)",
   "license": "MIT",
   "repository": {
@@ -42,12 +43,14 @@
     "files": [
       "src/**/*",
       "worker/**/*",
+      "build/icon.ico",
       "package.json"
     ],
     "directories": {
       "buildResources": "build"
     },
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         {
           "target": "nsis",
