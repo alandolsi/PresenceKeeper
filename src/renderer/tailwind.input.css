@@ -7,9 +7,9 @@
     @apply m-0 text-slate-100;
     font-family: "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
     background:
-      radial-gradient(800px 380px at 8% -10%, rgba(34, 211, 238, 0.24), transparent 55%),
-      radial-gradient(700px 340px at 92% 0%, rgba(190, 24, 93, 0.2), transparent 52%),
-      linear-gradient(160deg, #070c16 0%, #091124 48%, #0f1d35 100%);
+      radial-gradient(780px 360px at 10% -8%, rgba(154, 219, 239, 0.25), transparent 56%),
+      radial-gradient(700px 320px at 92% 2%, rgba(158, 174, 234, 0.22), transparent 52%),
+      linear-gradient(160deg, #0a1226 0%, #0f1b39 50%, #152957 100%);
     min-height: 100vh;
   }
 }
@@ -24,14 +24,14 @@
   }
 
   .orb-start {
-    @apply orb-btn bg-gradient-to-br from-accent to-accentStrong hover:scale-105 hover:shadow-cyan-400/30 active:scale-95;
+    @apply orb-btn bg-gradient-to-br from-brandSky to-brandDeep hover:scale-105 hover:shadow-sky-300/30 active:scale-95;
   }
 
   .orb-stop {
-    @apply orb-btn bg-gradient-to-br from-danger to-dangerStrong hover:scale-105 hover:shadow-rose-500/30 active:scale-95;
+    @apply orb-btn bg-gradient-to-br from-brandBlue to-brandNight hover:scale-105 hover:shadow-indigo-300/30 active:scale-95;
   }
 
   .input-modern {
-    @apply rounded-xl border border-line bg-panelSoft px-3 py-2 text-slate-100 outline-none transition focus:border-accent;
+    @apply rounded-xl border border-line bg-panelSoft px-3 py-2 text-slate-100 outline-none transition focus:border-brandSky;
   }
 }

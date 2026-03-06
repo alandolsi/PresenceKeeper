@@ -6,10 +6,10 @@
   <title>PresenceKeeper</title>
   <link rel="stylesheet" href="tailwind.css" />
 </head>
-<body class="selection:bg-accent/40">
+<body class="selection:bg-brandSky/40">
   <main class="mx-auto max-w-6xl px-4 pb-8 pt-8 md:px-8">
     <header class="mb-6">
-      <div class="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs tracking-[0.18em] text-cyan-200">PRESENCEKEEPER</div>
+      <div class="inline-flex items-center gap-2 rounded-full border border-brandSky/40 bg-brandSky/10 px-3 py-1 text-xs tracking-[0.18em] text-brandSky">PRESENCEKEEPER</div>
       <h1 class="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">Control Center</h1>
       <p class="mt-2 text-slate-300">Modern desktop activity scheduler for Windows</p>
     </header>
@@ -37,7 +37,7 @@
           </label>
           <div class="rounded-xl border border-line bg-panelSoft px-4 py-3 text-right">
             <div class="text-xs uppercase tracking-wide text-slate-400">Next tick</div>
-            <div id="countdown" class="mt-1 text-2xl font-semibold text-cyan-300">-</div>
+            <div id="countdown" class="mt-1 text-2xl font-semibold text-brandSky">-</div>
           </div>
         </div>
 
@@ -65,7 +65,7 @@
             <input id="stopTime" class="input-modern w-full" type="time" value="17:30" />
           </label>
         </div>
-        <button id="saveScheduleBtn" class="mt-4 w-full rounded-xl border border-cyan-400/40 bg-cyan-500/20 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-500/30">Save Schedule</button>
+        <button id="saveScheduleBtn" class="mt-4 w-full rounded-xl border border-brandSky/40 bg-brandSky/20 px-3 py-2 text-sm font-semibold text-brandSky transition hover:bg-brandSky/30">Save Schedule</button>
       </section>
     </div>
 
@@ -74,7 +74,7 @@
         <h2 class="text-lg font-semibold">Event Log</h2>
         <span class="text-xs uppercase tracking-wide text-slate-400">Session Output</span>
       </div>
-      <pre id="log" class="max-h-64 min-h-44 overflow-auto rounded-xl border border-slate-700 bg-slate-950/90 p-3 text-xs text-cyan-100"></pre>
+      <pre id="log" class="max-h-64 min-h-44 overflow-auto rounded-xl border border-line bg-slate-950/90 p-3 text-xs text-brandSky"></pre>
     </section>
   </main>
 
