@@ -18,6 +18,7 @@ PresenceKeeper is a Windows desktop app built with Electron to simulate periodic
 - Electron
 - PowerShell worker process
 - TailwindCSS-based renderer UI
+- Lucide (Open Source icons via `lucide-static`)
 
 ## Project Structure
 - `src/main.js`: Electron main process and worker orchestration.

@@ -6,75 +6,96 @@
   <title>PresenceKeeper</title>
   <link rel="stylesheet" href="tailwind.css" />
 </head>
-<body class="selection:bg-accent/40">
+<body class="selection:bg-sky-200">
   <main class="mx-auto max-w-6xl px-4 pb-8 pt-8 md:px-8">
     <header class="mb-6">
-      <div class="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs tracking-[0.18em] text-cyan-200">PRESENCEKEEPER</div>
-      <h1 class="mt-3 text-4xl font-semibold tracking-tight text-white md:text-5xl">Control Center</h1>
-      <p class="mt-2 text-slate-300">Modern desktop activity scheduler for Windows</p>
+      <div class="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs tracking-[0.18em] text-sky-700">PRESENCEKEEPER</div>
+      <h1 class="mt-3 text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">Control Center</h1>
+      <p class="mt-2 text-slate-600">Modern desktop activity scheduler for Windows</p>
     </header>
 
     <div class="grid gap-4 lg:grid-cols-3">
       <section class="glass-card p-5 lg:col-span-2">
         <div class="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 class="text-lg font-semibold">Runtime</h2>
-            <p class="text-sm text-slate-400">Manual start/stop with live countdown</p>
+            <h2 class="text-lg font-semibold text-slate-900">
+              <img src="icons/activity.svg" alt="" class="ui-icon mr-1" />
+              Runtime
+            </h2>
+            <p class="text-sm text-slate-600">Manual start/stop with live countdown</p>
           </div>
-          <div class="rounded-xl border border-line bg-panelSoft px-3 py-2">
-            <div class="text-xs uppercase tracking-wide text-slate-400">Status</div>
+          <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
+            <div class="text-xs uppercase tracking-wide text-slate-500">Status</div>
             <div class="mt-1 flex items-center gap-2">
               <span id="statusDot" class="h-2.5 w-2.5 rounded-full bg-slate-500"></span>
-              <strong id="status" class="text-sm">Stopped</strong>
+              <strong id="status" class="text-sm text-slate-800">Stopped</strong>
             </div>
           </div>
         </div>
 
         <div class="mt-5 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
           <label class="block">
-            <span class="mb-1 block text-sm text-slate-300">Interval (seconds)</span>
+            <span class="mb-1 block text-sm text-slate-700">Interval (seconds)</span>
             <input id="interval" class="input-modern w-full md:w-56" type="number" min="30" max="900" value="240" />
           </label>
-          <div class="rounded-xl border border-line bg-panelSoft px-4 py-3 text-right">
-            <div class="text-xs uppercase tracking-wide text-slate-400">Next tick</div>
-            <div id="countdown" class="mt-1 text-2xl font-semibold text-cyan-300">-</div>
+          <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-right">
+            <div class="text-xs uppercase tracking-wide text-slate-500">
+              <img src="icons/clock-3.svg" alt="" class="ui-icon mr-1" />
+              Next tick
+            </div>
+            <div id="countdown" class="mt-1 text-2xl font-semibold text-sky-700">-</div>
           </div>
         </div>
 
         <div class="mt-6 flex flex-wrap items-center gap-4">
-          <button id="startBtn" class="orb-start">START</button>
-          <button id="stopBtn" class="orb-stop">STOP</button>
-          <p class="text-sm text-slate-400">Round controls with instant response and schedule fallback.</p>
+          <button id="startBtn" class="orb-start">
+            <img src="icons/play.svg" alt="" class="mx-auto mb-1 h-5 w-5" />
+            START
+          </button>
+          <button id="stopBtn" class="orb-stop">
+            <img src="icons/square.svg" alt="" class="mx-auto mb-1 h-5 w-5" />
+            STOP
+          </button>
+          <p class="text-sm text-slate-600">Round controls with instant response and schedule fallback.</p>
         </div>
       </section>
 
       <section class="glass-card p-5">
-        <h2 class="text-lg font-semibold">Daily Schedule</h2>
-        <p class="text-sm text-slate-400">Automatic runtime window</p>
+        <h2 class="text-lg font-semibold text-slate-900">
+          <img src="icons/calendar-clock.svg" alt="" class="ui-icon mr-1" />
+          Daily Schedule
+        </h2>
+        <p class="text-sm text-slate-600">Automatic runtime window</p>
         <label class="mt-4 flex cursor-pointer items-center gap-2 text-sm">
-          <input id="scheduleEnabled" type="checkbox" class="h-4 w-4 rounded border-line bg-panelSoft" />
+          <input id="scheduleEnabled" type="checkbox" class="h-4 w-4 rounded border-slate-300 bg-white" />
           Enable schedule
         </label>
         <div class="mt-4 space-y-3">
           <label class="block">
-            <span class="mb-1 block text-sm text-slate-300">Start time</span>
+            <span class="mb-1 block text-sm text-slate-700">Start time</span>
             <input id="startTime" class="input-modern w-full" type="time" value="08:30" />
           </label>
           <label class="block">
-            <span class="mb-1 block text-sm text-slate-300">Stop time</span>
+            <span class="mb-1 block text-sm text-slate-700">Stop time</span>
             <input id="stopTime" class="input-modern w-full" type="time" value="17:30" />
           </label>
         </div>
-        <button id="saveScheduleBtn" class="mt-4 w-full rounded-xl border border-cyan-400/40 bg-cyan-500/20 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-500/30">Save Schedule</button>
+        <button id="saveScheduleBtn" class="mt-4 w-full rounded-xl border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-semibold text-sky-800 transition hover:bg-sky-100">
+          <img src="icons/save.svg" alt="" class="ui-icon mr-1" />
+          Save Schedule
+        </button>
       </section>
     </div>
 
     <section class="glass-card mt-4 p-5">
       <div class="mb-3 flex items-center justify-between gap-2">
-        <h2 class="text-lg font-semibold">Event Log</h2>
-        <span class="text-xs uppercase tracking-wide text-slate-400">Session Output</span>
+        <h2 class="text-lg font-semibold text-slate-900">
+          <img src="icons/logs.svg" alt="" class="ui-icon mr-1" />
+          Event Log
+        </h2>
+        <span class="text-xs uppercase tracking-wide text-slate-500">Session Output</span>
       </div>
-      <pre id="log" class="max-h-64 min-h-44 overflow-auto rounded-xl border border-slate-700 bg-slate-950/90 p-3 text-xs text-cyan-100"></pre>
+      <pre id="log" class="max-h-64 min-h-44 overflow-auto rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700"></pre>
     </section>
   </main>
 

@@ -22,17 +22,20 @@
     "automation"
   ],
   "scripts": {
+    "icons:sync": "node ./scripts/sync-icons.mjs",
     "css:build": "tailwindcss -c tailwind.config.js -i ./src/renderer/tailwind.input.css -o ./src/renderer/tailwind.css --minify",
-    "predev": "npm run css:build",
+    "predev": "npm run icons:sync && npm run css:build",
     "dev": "electron .",
-    "prebuild": "npm run css:build",
+    "prebuild": "npm run icons:sync && npm run css:build",
     "build": "electron-builder --dir",
-    "predist": "npm run css:build",
+    "predist": "npm run icons:sync && npm run css:build",
     "dist": "electron-builder"
   },
   "devDependencies": {
     "electron": "^35.7.5",
     "electron-builder": "^26.8.1",
+    "lucide-static": "^0.577.0",
+    "png-to-ico": "^3.0.1",
     "tailwindcss": "^3.4.17"
   },
   "build": {
