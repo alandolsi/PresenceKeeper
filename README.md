@@ -21,6 +21,10 @@ PresenceKeeper is a Windows desktop app built with Electron to simulate periodic
 - TailwindCSS-based renderer UI
 - Lucide (Open Source icons via `lucide-static`)
 
+## Security
+- Dependency updates are managed with Dependabot (`.github/dependabot.yml`).
+- Security policy and audit baseline are documented in `SECURITY.md`.
+
 ## Project Structure
 - `src/main.js`: Electron main process and worker orchestration.
 - `src/preload.js`: Secure IPC bridge.
