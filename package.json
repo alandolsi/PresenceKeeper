@@ -5,6 +5,21 @@
   "main": "src/main.js",
   "author": "Landolsi Webdesign <info@landolsi.de> (https://landolsi.de)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alandolsi/PresenceKeeper.git"
+  },
+  "homepage": "https://github.com/alandolsi/PresenceKeeper",
+  "bugs": {
+    "url": "https://github.com/alandolsi/PresenceKeeper/issues"
+  },
+  "keywords": [
+    "electron",
+    "windows",
+    "productivity",
+    "presence",
+    "automation"
+  ],
   "scripts": {
     "css:build": "tailwindcss -c tailwind.config.js -i ./src/renderer/tailwind.input.css -o ./src/renderer/tailwind.css --minify",
     "predev": "npm run css:build",
@@ -22,17 +37,40 @@
   "build": {
     "appId": "de.landolsi.presencekeeper",
     "productName": "PresenceKeeper",
+    "copyright": "Copyright © 2026 Landolsi Webdesign",
+    "artifactName": "PresenceKeeper-${version}-Setup.${ext}",
     "files": [
       "src/**/*",
       "worker/**/*",
       "package.json"
     ],
+    "directories": {
+      "buildResources": "build"
+    },
     "win": {
-      "target": "nsis"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "publisherName": "Landolsi Webdesign"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    }
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "PresenceKeeper"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "alandolsi",
+        "repo": "PresenceKeeper"
+      }
+    ]
   }
 }

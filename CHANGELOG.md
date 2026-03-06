@@ -9,9 +9,11 @@ This project adheres to Semantic Versioning.
 ### Added
 - TailwindCSS build pipeline for renderer styling.
 - Modernized control-center UI with round Start/Stop buttons.
+- GitHub release workflow for tagged installer publishing.
 
 ### Changed
 - Replaced legacy renderer stylesheet with Tailwind-based styles.
+- Improved Electron builder metadata for production publishing.
 
 ## [0.1.0] - 2026-03-06
 ### Added

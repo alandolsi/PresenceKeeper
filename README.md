@@ -35,9 +35,35 @@ npm run dev
 
 `npm run dev` builds Tailwind assets automatically via `predev`.
 
+## Local Test (Windows)
+1. Start app:
+```bash
+cd C:\dev\PresenceKeeper
+npm install
+npm run dev
+```
+2. In the app UI:
+- Set interval (example: `60`).
+- Click `START` (round button).
+- Verify status changes to `Running` and countdown decreases.
+- Click `STOP` and verify status returns to `Stopped`.
+3. Schedule test:
+- Enable schedule.
+- Set start to 1-2 minutes from now and stop to 3-4 minutes from now.
+- Save schedule and check log entries for auto start/stop.
+
 ## Build
 ```bash
 npm run dist
+```
+
+Installer output appears in `dist\` (Windows NSIS setup executable).
+
+## GitHub Release
+Push a semantic version tag to trigger installer publishing:
+```bash
+git tag v0.1.1
+git push origin main --tags
 ```
 
 ## Versioning
