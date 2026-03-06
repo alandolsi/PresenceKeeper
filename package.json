@@ -6,13 +6,18 @@
   "author": "Landolsi Webdesign <info@landolsi.de> (https://landolsi.de)",
   "license": "MIT",
   "scripts": {
+    "css:build": "tailwindcss -c tailwind.config.js -i ./src/renderer/tailwind.input.css -o ./src/renderer/tailwind.css --minify",
+    "predev": "npm run css:build",
     "dev": "electron .",
+    "prebuild": "npm run css:build",
     "build": "electron-builder --dir",
+    "predist": "npm run css:build",
     "dist": "electron-builder"
   },
   "devDependencies": {
     "electron": "^31.7.7",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.13.3",
+    "tailwindcss": "^3.4.17"
   },
   "build": {
     "appId": "de.landolsi.presencekeeper",

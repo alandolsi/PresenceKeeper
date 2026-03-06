@@ -1,4 +1,5 @@
 const statusEl = document.getElementById('status');
+const statusDotEl = document.getElementById('statusDot');
 const countdownEl = document.getElementById('countdown');
 const logEl = document.getElementById('log');
 
@@ -21,10 +22,17 @@ function appendLog(line) {
 function renderState(state) {
   currentState = state;
   statusEl.textContent = state.running ? 'Running' : 'Stopped';
+  statusDotEl.className = state.running ? 'h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.85)]' : 'h-2.5 w-2.5 rounded-full bg-slate-500';
   intervalEl.value = state.intervalSeconds;
   scheduleEnabledEl.checked = !!state.schedule.enabled;
   startTimeEl.value = state.schedule.startTime;
   stopTimeEl.value = state.schedule.stopTime;
+  startBtn.disabled = state.running;
+  stopBtn.disabled = !state.running;
+  startBtn.classList.toggle('opacity-50', state.running);
+  startBtn.classList.toggle('cursor-not-allowed', state.running);
+  stopBtn.classList.toggle('opacity-50', !state.running);
+  stopBtn.classList.toggle('cursor-not-allowed', !state.running);
 }
 
 function updateCountdown() {

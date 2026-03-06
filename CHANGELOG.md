@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on Keep a Changelog.
 This project adheres to Semantic Versioning.
 
+## [Unreleased]
+### Added
+- TailwindCSS build pipeline for renderer styling.
+- Modernized control-center UI with round Start/Stop buttons.
+
+### Changed
+- Replaced legacy renderer stylesheet with Tailwind-based styles.
+
 ## [0.1.0] - 2026-03-06
 ### Added
 - Initial Electron project structure.
