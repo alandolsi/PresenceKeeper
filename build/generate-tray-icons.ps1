@@ -27,11 +27,11 @@ function Save-TrayIcon {
   $g.DrawImage($img, 0, 0, $size, $size)
 
   if ($ShowDot) {
-    $dotSize = 10
-    $x = $size - $dotSize - 2
-    $y = $size - $dotSize - 2
+    $dotSize = 14
+    $x = $size - $dotSize - 1
+    $y = $size - $dotSize - 1
     $dotBrush = New-Object System.Drawing.SolidBrush($DotColor)
-    $ringPen = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(240, 255, 255, 255), 1.5)
+    $ringPen = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(245, 255, 255, 255), 2)
     $g.FillEllipse($dotBrush, $x, $y, $dotSize, $dotSize)
     $g.DrawEllipse($ringPen, $x, $y, $dotSize, $dotSize)
     $dotBrush.Dispose()
