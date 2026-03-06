@@ -8,11 +8,15 @@ let schedulerTimer = null;
 let lastScheduleActionKey = null;
 let tray = null;
 let isQuitting = false;
+let trayBlinkTimer = null;
+let trayBlinkOn = true;
+const startHidden = process.argv.includes('--hidden');
 
 const state = {
   running: false,
   intervalSeconds: 240,
   nextTickAt: null,
+  autoStartEnabled: false,
   schedule: {
     enabled: false,
     startTime: '08:30',
@@ -25,6 +29,7 @@ function sendState() {
     mainWindow.webContents.send('state:update', state);
   }
   refreshTrayMenu();
+  refreshTrayIcon();
 }
 
 function log(message) {
@@ -37,6 +42,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 860,
     height: 680,
+    show: !startHidden,
     icon: path.join(app.getAppPath(), 'build', 'icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -58,6 +64,25 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+}
+
+function setAutoStart(enabled) {
+  const on = !!enabled;
+  try {
+    if (process.platform === 'win32') {
+      app.setLoginItemSettings({
+        openAtLogin: on,
+        path: process.execPath,
+        args: ['--hidden']
+      });
+    }
+    state.autoStartEnabled = on;
+    sendState();
+    log(`Auto-start ${on ? 'enabled' : 'disabled'}.`);
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, message: error.message };
+  }
 }
 
 function openMainWindow() {
@@ -99,12 +124,37 @@ function refreshTrayMenu() {
   tray.setContextMenu(menu);
 }
 
+function refreshTrayIcon() {
+  if (!tray) return;
+  if (trayBlinkTimer) {
+    clearInterval(trayBlinkTimer);
+    trayBlinkTimer = null;
+  }
+
+  const runningPath = path.join(app.getAppPath(), 'build', 'tray-running.png');
+  const runningBlinkPath = path.join(app.getAppPath(), 'build', 'tray-running-blink.png');
+  const stoppedPath = path.join(app.getAppPath(), 'build', 'tray-stopped.png');
+
+  if (!state.running) {
+    tray.setImage(stoppedPath);
+    return;
+  }
+
+  trayBlinkOn = true;
+  tray.setImage(runningPath);
+  trayBlinkTimer = setInterval(() => {
+    trayBlinkOn = !trayBlinkOn;
+    tray.setImage(trayBlinkOn ? runningPath : runningBlinkPath);
+  }, 700);
+}
+
 function createTray() {
   if (tray) return;
-  tray = new Tray(path.join(app.getAppPath(), 'build', 'icon.ico'));
+  tray = new Tray(path.join(app.getAppPath(), 'build', 'tray-stopped.png'));
   tray.setToolTip('PresenceKeeper');
   tray.on('double-click', () => openMainWindow());
   refreshTrayMenu();
+  refreshTrayIcon();
 }
 
 function parseWorkerLine(line) {
@@ -198,6 +248,9 @@ function scheduleLoop() {
 
 app.whenReady().then(() => {
   app.setAppUserModelId('de.landolsi.presencekeeper');
+  if (process.platform === 'win32') {
+    state.autoStartEnabled = app.getLoginItemSettings().openAtLogin;
+  }
   createWindow();
   createTray();
   schedulerTimer = setInterval(scheduleLoop, 1000);
@@ -223,6 +276,10 @@ app.whenReady().then(() => {
     return { ok: true };
   });
 
+  ipcMain.handle('autostart:set', (_event, enabled) => {
+    return setAutoStart(enabled);
+  });
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
@@ -237,5 +294,6 @@ app.on('before-quit', () => {
   isQuitting = true;
   if (schedulerTimer) clearInterval(schedulerTimer);
   if (workerProcess) workerProcess.kill();
+  if (trayBlinkTimer) clearInterval(trayBlinkTimer);
   if (tray) tray.destroy();
 });

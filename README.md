@@ -11,6 +11,7 @@ PresenceKeeper is a Windows desktop app built with Electron to simulate periodic
 - Configurable activity interval.
 - Live countdown until the next activity trigger.
 - Scheduled daily start and stop times.
+- Optional Windows auto-start setting.
 - Local event logging.
 - Windows installer pipeline ready (NSIS via electron-builder).
 
