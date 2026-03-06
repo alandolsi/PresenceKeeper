@@ -4,34 +4,38 @@
 
 @layer base {
   body {
-    @apply m-0 text-slate-100;
+    @apply m-0 text-slate-900;
     font-family: "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
     background:
-      radial-gradient(780px 360px at 10% -8%, rgba(154, 219, 239, 0.25), transparent 56%),
-      radial-gradient(700px 320px at 92% 2%, rgba(158, 174, 234, 0.22), transparent 52%),
-      linear-gradient(160deg, #0a1226 0%, #0f1b39 50%, #152957 100%);
+      radial-gradient(900px 380px at 8% -8%, rgba(79, 172, 254, 0.12), transparent 60%),
+      radial-gradient(850px 360px at 100% 0%, rgba(22, 163, 74, 0.1), transparent 58%),
+      linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
     min-height: 100vh;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply rounded-2xl border border-line/70 bg-panel/70 backdrop-blur-md;
+    @apply rounded-2xl border border-slate-200 bg-white/95 shadow-sm;
   }
 
   .orb-btn {
-    @apply h-28 w-28 rounded-full border border-white/15 text-sm font-semibold tracking-wide text-white shadow-lg transition duration-200;
+    @apply h-28 w-28 rounded-full border text-sm font-semibold tracking-wide text-white shadow-md transition duration-200;
   }
 
   .orb-start {
-    @apply orb-btn bg-gradient-to-br from-brandSky to-brandDeep hover:scale-105 hover:shadow-sky-300/30 active:scale-95;
+    @apply orb-btn border-emerald-700 bg-gradient-to-br from-emerald-500 to-emerald-700 hover:scale-105 hover:shadow-emerald-400/30 active:scale-95;
   }
 
   .orb-stop {
-    @apply orb-btn bg-gradient-to-br from-brandBlue to-brandNight hover:scale-105 hover:shadow-indigo-300/30 active:scale-95;
+    @apply orb-btn border-rose-700 bg-gradient-to-br from-rose-500 to-rose-700 hover:scale-105 hover:shadow-rose-400/30 active:scale-95;
   }
 
   .input-modern {
-    @apply rounded-xl border border-line bg-panelSoft px-3 py-2 text-slate-100 outline-none transition focus:border-brandSky;
+    @apply rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-sky-500;
+  }
+
+  .ui-icon {
+    @apply inline-block h-4 w-4 align-middle;
   }
 }
