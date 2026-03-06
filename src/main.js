@@ -160,14 +160,6 @@ function createTray() {
 function createAppMenu() {
   const template = [
     {
-      label: 'File',
-      submenu: [
-        { label: 'Open', click: () => openMainWindow() },
-        { type: 'separator' },
-        { role: 'quit', label: 'Exit' }
-      ]
-    },
-    {
       label: 'Help',
       submenu: [
         { label: 'Kontaktseite', click: () => shell.openExternal('https://landolsi.de') },
