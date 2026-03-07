@@ -33,7 +33,7 @@
     "dist": "electron-builder"
   },
   "devDependencies": {
-    "electron": "^35.7.5",
+    "electron": "^40.8.0",
     "electron-builder": "^26.8.1",
     "lucide-static": "^0.577.0",
     "png-to-ico": "^3.0.1",
