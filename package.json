@@ -79,5 +79,8 @@
         "repo": "PresenceKeeper"
       }
     ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
   }
 }

@@ -7,6 +7,10 @@ const intervalEl = document.getElementById('interval');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const autoStartEnabledEl = document.getElementById('autostartEnabled');
+const checkUpdateBtn = document.getElementById('checkUpdateBtn');
+const installUpdateBtn = document.getElementById('installUpdateBtn');
+const updateStatusEl = document.getElementById('updateStatus');
+const updateVersionEl = document.getElementById('updateVersion');
 
 const scheduleEnabledEl = document.getElementById('scheduleEnabled');
 const startTimeEl = document.getElementById('startTime');
@@ -18,6 +22,20 @@ let currentState = null;
 function appendLog(line) {
   logEl.textContent += `${line}\n`;
   logEl.scrollTop = logEl.scrollHeight;
+}
+
+function updateUpdateSection(state) {
+  const updateState = state.update || { status: 'idle', version: null, error: null };
+  updateStatusEl.textContent = `Status: ${updateState.status}`;
+  updateVersionEl.textContent = updateState.version ? `Version: ${updateState.version}` : '';
+  if (updateState.error) {
+    appendLog(`Update error: ${updateState.error}`);
+  }
+
+  checkUpdateBtn.disabled = updateState.status === 'checking' || updateState.status === 'downloading';
+  installUpdateBtn.disabled = updateState.status !== 'downloaded';
+  checkUpdateBtn.classList.toggle('opacity-50', checkUpdateBtn.disabled);
+  installUpdateBtn.classList.toggle('opacity-50', installUpdateBtn.disabled);
 }
 
 function renderState(state) {
@@ -35,6 +53,7 @@ function renderState(state) {
   startBtn.classList.toggle('cursor-not-allowed', state.running);
   stopBtn.classList.toggle('opacity-50', !state.running);
   stopBtn.classList.toggle('cursor-not-allowed', !state.running);
+  updateUpdateSection(state);
 }
 
 function updateCountdown() {
@@ -71,6 +90,16 @@ saveScheduleBtn.addEventListener('click', async () => {
 autoStartEnabledEl.addEventListener('change', async () => {
   const res = await window.presenceApi.setAutoStart(autoStartEnabledEl.checked);
   if (!res.ok) appendLog(`Auto-start save failed: ${res.message}`);
+});
+
+checkUpdateBtn.addEventListener('click', async () => {
+  const res = await window.presenceApi.checkForUpdates();
+  if (!res.ok) appendLog(`Update check skipped: ${res.message}`);
+});
+
+installUpdateBtn.addEventListener('click', async () => {
+  const res = await window.presenceApi.installUpdate();
+  if (!res.ok) appendLog(`Install update failed: ${res.message}`);
 });
 
 window.presenceApi.onStateUpdate(renderState);
