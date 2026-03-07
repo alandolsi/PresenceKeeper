@@ -1,10 +1,12 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu, shell } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('node:path');
 const { spawn } = require('node:child_process');
 
 let mainWindow;
 let workerProcess = null;
 let schedulerTimer = null;
+let updateCheckTimer = null;
 let lastScheduleActionKey = null;
 let tray = null;
 let isQuitting = false;
@@ -17,6 +19,11 @@ const state = {
   intervalSeconds: 240,
   nextTickAt: null,
   autoStartEnabled: false,
+  update: {
+    status: 'idle',
+    version: null,
+    error: null
+  },
   schedule: {
     enabled: false,
     startTime: '08:30',
@@ -36,6 +43,11 @@ function log(message) {
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.webContents.send('log:append', `[${new Date().toLocaleTimeString()}] ${message}`);
   }
+}
+
+function setUpdateState(status, version = null, error = null) {
+  state.update = { status, version, error };
+  sendState();
 }
 
 function createWindow() {
@@ -96,6 +108,76 @@ function openMainWindow() {
   mainWindow.focus();
 }
 
+function checkForUpdates() {
+  if (!app.isPackaged) {
+    const message = 'Updates are only available in installed builds.';
+    log(message);
+    return { ok: false, message };
+  }
+
+  autoUpdater.checkForUpdates().catch((error) => {
+    const msg = error?.message || String(error);
+    setUpdateState('error', null, msg);
+    log(`Update check failed: ${msg}`);
+  });
+
+  return { ok: true };
+}
+
+function installDownloadedUpdate() {
+  if (state.update.status !== 'downloaded') {
+    return { ok: false, message: 'No downloaded update available.' };
+  }
+
+  log('Installing update and restarting app...');
+  setImmediate(() => autoUpdater.quitAndInstall());
+  return { ok: true };
+}
+
+function setupAutoUpdater() {
+  if (!app.isPackaged) {
+    setUpdateState('disabled');
+    return;
+  }
+
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('checking-for-update', () => {
+    setUpdateState('checking');
+    log('Checking for updates...');
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    setUpdateState('downloading', info?.version || null);
+    log(`Update available${info?.version ? `: v${info.version}` : ''}. Downloading...`);
+  });
+
+  autoUpdater.on('update-not-available', () => {
+    setUpdateState('idle');
+    log('No updates available.');
+  });
+
+  autoUpdater.on('update-downloaded', (info) => {
+    setUpdateState('downloaded', info?.version || null);
+    log(`Update downloaded${info?.version ? `: v${info.version}` : ''}. Restart to install.`);
+  });
+
+  autoUpdater.on('error', (error) => {
+    const msg = error?.message || String(error);
+    setUpdateState('error', null, msg);
+    log(`Auto-update error: ${msg}`);
+  });
+
+  setTimeout(() => {
+    checkForUpdates();
+  }, 10000);
+
+  updateCheckTimer = setInterval(() => {
+    checkForUpdates();
+  }, 6 * 60 * 60 * 1000);
+}
+
 function refreshTrayMenu() {
   if (!tray) return;
   const menu = Menu.buildFromTemplate([
@@ -110,6 +192,13 @@ function refreshTrayMenu() {
       label: 'Stop',
       enabled: state.running,
       click: () => stopWorker()
+    },
+    { type: 'separator' },
+    { label: 'Check for Updates', click: () => checkForUpdates() },
+    {
+      label: 'Install Update and Restart',
+      enabled: state.update.status === 'downloaded',
+      click: () => installDownloadedUpdate()
     },
     { type: 'separator' },
     { label: 'Open', click: () => openMainWindow() },
@@ -162,6 +251,13 @@ function createAppMenu() {
     {
       label: 'Help',
       submenu: [
+        { label: 'Check for Updates', click: () => checkForUpdates() },
+        {
+          label: 'Install Update and Restart',
+          enabled: state.update.status === 'downloaded',
+          click: () => installDownloadedUpdate()
+        },
+        { type: 'separator' },
         { label: 'Kontaktseite', click: () => shell.openExternal('https://landolsi.de') },
         { label: 'E-Mail schreiben', click: () => shell.openExternal('mailto:info@landolsi.de?subject=PresenceKeeper%20Support') },
         { type: 'separator' },
@@ -270,6 +366,7 @@ app.whenReady().then(() => {
   createAppMenu();
   createWindow();
   createTray();
+  setupAutoUpdater();
   schedulerTimer = setInterval(scheduleLoop, 1000);
 
   ipcMain.handle('state:get', () => state);
@@ -297,19 +394,27 @@ app.whenReady().then(() => {
     return setAutoStart(enabled);
   });
 
+  ipcMain.handle('updates:check', () => {
+    return checkForUpdates();
+  });
+
+  ipcMain.handle('updates:install', () => {
+    return installDownloadedUpdate();
+  });
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
 
 app.on('window-all-closed', () => {
-  // Keep app alive in tray on Windows/Linux.
   if (process.platform === 'darwin') app.quit();
 });
 
 app.on('before-quit', () => {
   isQuitting = true;
   if (schedulerTimer) clearInterval(schedulerTimer);
+  if (updateCheckTimer) clearInterval(updateCheckTimer);
   if (workerProcess) workerProcess.kill();
   if (trayBlinkTimer) clearInterval(trayBlinkTimer);
   if (tray) tray.destroy();
