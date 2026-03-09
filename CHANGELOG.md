@@ -6,6 +6,11 @@ The format is based on Keep a Changelog.
 This project adheres to Semantic Versioning.
 
 ## [Unreleased]
+
+## [0.2.2] - 2026-03-09
+### Fixed
+- Release/version consistency improvements for installer artifacts and GitHub tagging.
+
 ### Added
 - TailwindCSS build pipeline for renderer styling.
 - Modernized control-center UI with round Start/Stop buttons.
