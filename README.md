@@ -1,83 +1,87 @@
 # PresenceKeeper
 
-PresenceKeeper is a Windows desktop app built with Electron to simulate periodic activity and keep presence from going idle.
+PresenceKeeper is a Windows desktop app (Electron + PowerShell) to keep activity from going idle with manual controls, scheduler automation, tray mode, and automatic updates.
 
-## Developer
-- Landolsi Webdesign <info@landolsi.de>
-- https://landolsi.de
+If PresenceKeeper helps you, please support the project with a GitHub Star.
+
+## SEO Keywords
+Windows presence app, idle prevention tool, keep status active, activity scheduler, tray app for Windows, auto-start desktop app, Electron Windows app, keyboard activity automation
+
+## Why PresenceKeeper
+- Fast `Start` / `Stop` runtime controls
+- Configurable interval (`30` to `900` seconds)
+- Daily scheduler with start and stop time
+- Runs in system tray
+- Optional Windows auto-start
+- Built-in update checks for installed releases
+- Multi-language UI: English, Deutsch, Français
 
 ## Features
-- Start and stop with dedicated controls.
-- Configurable activity interval.
-- Live countdown until the next activity trigger.
-- Scheduled daily start and stop times.
-- Optional Windows auto-start setting.\n- Built-in automatic update checks for installed app releases.
-- Local event logging.
-- Windows installer pipeline ready (NSIS via electron-builder).
+- Runtime dashboard with status and countdown
+- Settings tab for interval, language, and startup behavior
+- Scheduler tab for daily automation
+- Event log (hidden by default, toggle when needed)
+- Local worker script orchestration via PowerShell
+- NSIS installer generation via `electron-builder`
 
-## Tech Stack
-- Electron
-- PowerShell worker process
-- TailwindCSS-based renderer UI
-- Lucide (Open Source icons via `lucide-static`)
+## Install (Windows)
+1. Open latest release:
+   - `https://github.com/alandolsi/PresenceKeeper/releases/latest`
+2. Download `PresenceKeeper-<version>-Setup.exe`
+3. Run setup and launch the app
 
-## Security
-- Dependency updates are managed with Dependabot (`.github/dependabot.yml`).
-- Security policy and audit baseline are documented in `SECURITY.md`.
+## Quick Start
+1. Set interval in `Settings`
+2. Click `Start` in dashboard
+3. Optional: enable schedule and define `start` / `stop` time
+4. Optional: enable auto-start with Windows login
 
-## Project Structure
-- `src/main.js`: Electron main process and worker orchestration.
-- `src/preload.js`: Secure IPC bridge.
-- `src/renderer/*`: UI layer.
-- `worker/presence_worker.ps1`: Background key simulation worker.
-- `ROADMAP.md`: Product milestones.
-- `CHANGELOG.md`: Version history.
+## Update
+- `Help -> Check for Updates`
+- `Help -> Install Update and Restart`
 
 ## Development
-```bash
-npm install
-npm run dev
-```
-
-`npm run dev` builds Tailwind assets automatically via `predev`.
-
-## Local Test (Windows)
-1. Start app:
 ```bash
 cd C:\dev\PresenceKeeper
 npm install
 npm run dev
 ```
-2. In the app UI:
-- Set interval (example: `60`).
-- Click `START` (round button).
-- Verify status changes to `Running` and countdown decreases.
-- Click `STOP` and verify status returns to `Stopped`.
-- Close the window and verify the app stays in system tray.
-- Reopen using tray icon double-click or tray menu `Open`.
-3. Schedule test:
-- Enable schedule.
-- Set start to 1-2 minutes from now and stop to 3-4 minutes from now.
-- Save schedule and check log entries for auto start/stop.
 
-## Build
+## Build Installer
 ```bash
 npm run dist
 ```
 
-Installer output appears in `dist\` (Windows NSIS setup executable).
+Installer artifacts are generated in `dist\`.
 
-## GitHub Release
-Push a semantic version tag to trigger installer publishing:
-```bash
-git tag v0.1.1
-git push origin main --tags
-```
+## Tech Stack
+- Electron
+- PowerShell worker process
+- Tailwind CSS
+- Lucide icon set
+- electron-updater
+- electron-builder (NSIS)
+
+## Project Structure
+- `src/main.js` Electron main process, tray/menu, updater, scheduler
+- `src/preload.js` secure IPC bridge
+- `src/renderer/*` UI
+- `worker/presence_worker.ps1` background worker script
+- `CHANGELOG.md` release notes
+- `ROADMAP.md` milestones
+
+## Developer
+- Landolsi Webdesign
+- Email: info@landolsi.de
+- Website: https://landolsi.de
+
+## Security
+- Dependabot: `.github/dependabot.yml`
+- Security policy: `SECURITY.md`
 
 ## Versioning
-This repository follows Semantic Versioning (`MAJOR.MINOR.PATCH`).
-Current version: `0.1.0`.
+Semantic Versioning (`MAJOR.MINOR.PATCH`)
 
-## Legal
-Use this software responsibly and in accordance with your company policies.
+## License
+MIT
 
