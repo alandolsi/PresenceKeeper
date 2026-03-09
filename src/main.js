@@ -252,6 +252,8 @@ function createAppMenu() {
     {
       label: 'Help',
       submenu: [
+        { label: `Version ${app.getVersion()}`, enabled: false },
+        { type: 'separator' },
         { label: 'Check for Updates', click: () => checkForUpdates() },
         {
           label: 'Install Update and Restart',
@@ -270,6 +272,17 @@ function createAppMenu() {
   Menu.setApplicationMenu(appMenu);
 }
 
+function shouldIgnoreWorkerBannerLine(line) {
+  const trimmed = line.trim();
+  if (!trimmed) return true;
+  return (
+    /^Windows PowerShell$/i.test(trimmed) ||
+    /^Copyright/i.test(trimmed) ||
+    /^Installieren Sie die neueste PowerShell/i.test(trimmed) ||
+    /^https?:\/\/aka\.ms\/PSWindows/i.test(trimmed)
+  );
+}
+
 function parseWorkerLine(line) {
   try {
     const event = JSON.parse(line);
@@ -284,7 +297,10 @@ function parseWorkerLine(line) {
       log(`Worker error: ${event.message}`);
     }
   } catch {
-    if (line.trim()) log(`Worker: ${line.trim()}`);
+    const trimmed = line.trim();
+    if (!shouldIgnoreWorkerBannerLine(trimmed)) {
+      log(`Worker: ${trimmed}`);
+    }
   }
 }
 
@@ -419,6 +435,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('updates:install', () => {
     return installDownloadedUpdate();
+  });
+
+  ipcMain.handle('app:info', () => {
+    return { name: app.getName(), version: app.getVersion() };
   });
 
   app.on('activate', () => {

@@ -6,6 +6,19 @@ The format is based on Keep a Changelog.
 This project adheres to Semantic Versioning.
 
 ## [Unreleased]
+
+## [0.2.4] - 2026-03-09
+### Changed
+- Moved schedule controls into a dedicated `Einstellungen` tab.
+- Removed the in-app `App Updates` panel from the dashboard; update actions remain in `Help`.
+- Added app version display in UI header and in the `Help` menu.
+- Log panel is now hidden by default and can be toggled via `Logs anzeigen`.
+
+### Fixed
+- Removed noisy startup line `Application initialized.` from session log output.
+- Suppressed PowerShell banner lines in worker log output.
+
+## [0.2.3] - 2026-03-09
 ### Fixed
 - Packaged PowerShell worker path resolution by loading from `app.asar.unpacked` in installed builds.
 
