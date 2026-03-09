@@ -7,6 +7,10 @@ This project adheres to Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.2.8] - 2026-03-09
+### Fixed
+- Restored Start/Stop orb button styling to match the previous visual design after the Tailwind v4 migration.
+
 ## [0.2.7] - 2026-03-09
 ### Changed
 - Migrated renderer styling pipeline from Tailwind CSS v3 to Tailwind CSS v4.
