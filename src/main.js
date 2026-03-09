@@ -20,6 +20,7 @@ const state = {
   intervalSeconds: 240,
   nextTickAt: null,
   autoStartEnabled: false,
+  locale: 'en',
   update: {
     status: 'idle',
     version: null,
@@ -32,9 +33,67 @@ const state = {
   }
 };
 
+const I18N = {
+  en: {
+    help: 'Help',
+    version: 'Version',
+    checkUpdates: 'Check for Updates',
+    installUpdate: 'Install Update and Restart',
+    contactPage: 'Contact Page',
+    writeEmail: 'Write Email',
+    githubRepo: 'GitHub Repository',
+    trayStatus: 'Status',
+    running: 'Running',
+    stopped: 'Stopped',
+    start: 'Start',
+    stop: 'Stop',
+    open: 'Open',
+    exit: 'Exit'
+  },
+  de: {
+    help: 'Hilfe',
+    version: 'Version',
+    checkUpdates: 'Nach Updates suchen',
+    installUpdate: 'Update installieren und neu starten',
+    contactPage: 'Kontaktseite',
+    writeEmail: 'E-Mail schreiben',
+    githubRepo: 'GitHub-Repository',
+    trayStatus: 'Status',
+    running: 'Aktiv',
+    stopped: 'Gestoppt',
+    start: 'Start',
+    stop: 'Stopp',
+    open: 'Öffnen',
+    exit: 'Beenden'
+  },
+  fr: {
+    help: 'Aide',
+    version: 'Version',
+    checkUpdates: 'Vérifier les mises à jour',
+    installUpdate: 'Installer la mise à jour et redémarrer',
+    contactPage: 'Page de contact',
+    writeEmail: 'Écrire un e-mail',
+    githubRepo: 'Dépôt GitHub',
+    trayStatus: 'Statut',
+    running: 'Actif',
+    stopped: 'Arrêté',
+    start: 'Démarrer',
+    stop: 'Arrêter',
+    open: 'Ouvrir',
+    exit: 'Quitter'
+  }
+};
+
+function t(key) {
+  return I18N[state.locale]?.[key] || I18N.en[key] || key;
+}
+
 function sendState() {
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.webContents.send('state:update', state);
+  }
+  if (app.isReady()) {
+    createAppMenu();
   }
   refreshTrayMenu();
   refreshTrayIcon();
@@ -182,29 +241,29 @@ function setupAutoUpdater() {
 function refreshTrayMenu() {
   if (!tray) return;
   const menu = Menu.buildFromTemplate([
-    { label: `Status: ${state.running ? 'Running' : 'Stopped'}`, enabled: false },
+    { label: `${t('trayStatus')}: ${state.running ? t('running') : t('stopped')}`, enabled: false },
     { type: 'separator' },
     {
-      label: 'Start',
+      label: t('start'),
       enabled: !state.running,
       click: () => startWorker(state.intervalSeconds)
     },
     {
-      label: 'Stop',
+      label: t('stop'),
       enabled: state.running,
       click: () => stopWorker()
     },
     { type: 'separator' },
-    { label: 'Check for Updates', click: () => checkForUpdates() },
+    { label: t('checkUpdates'), click: () => checkForUpdates() },
     {
-      label: 'Install Update and Restart',
+      label: t('installUpdate'),
       enabled: state.update.status === 'downloaded',
       click: () => installDownloadedUpdate()
     },
     { type: 'separator' },
-    { label: 'Open', click: () => openMainWindow() },
+    { label: t('open'), click: () => openMainWindow() },
     {
-      label: 'Exit',
+      label: t('exit'),
       click: () => {
         isQuitting = true;
         app.quit();
@@ -250,26 +309,35 @@ function createTray() {
 function createAppMenu() {
   const template = [
     {
-      label: 'Help',
+      label: t('help'),
       submenu: [
-        { label: `Version ${app.getVersion()}`, enabled: false },
+        { label: `${t('version')} ${app.getVersion()}`, enabled: false },
         { type: 'separator' },
-        { label: 'Check for Updates', click: () => checkForUpdates() },
+        { label: t('checkUpdates'), click: () => checkForUpdates() },
         {
-          label: 'Install Update and Restart',
+          label: t('installUpdate'),
           enabled: state.update.status === 'downloaded',
           click: () => installDownloadedUpdate()
         },
         { type: 'separator' },
-        { label: 'Kontaktseite', click: () => shell.openExternal('https://landolsi.de') },
-        { label: 'E-Mail schreiben', click: () => shell.openExternal('mailto:info@landolsi.de?subject=PresenceKeeper%20Support') },
+        { label: t('contactPage'), click: () => shell.openExternal('https://landolsi.de') },
+        { label: t('writeEmail'), click: () => shell.openExternal('mailto:info@landolsi.de?subject=PresenceKeeper%20Support') },
         { type: 'separator' },
-        { label: 'GitHub Repository', click: () => shell.openExternal('https://github.com/alandolsi/PresenceKeeper') }
+        { label: t('githubRepo'), click: () => shell.openExternal('https://github.com/alandolsi/PresenceKeeper') }
       ]
     }
   ];
   const appMenu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(appMenu);
+}
+
+function setLocale(locale) {
+  if (!['en', 'de', 'fr'].includes(locale)) {
+    return { ok: false, message: 'Unsupported locale.' };
+  }
+  state.locale = locale;
+  sendState();
+  return { ok: true };
 }
 
 function shouldIgnoreWorkerBannerLine(line) {
@@ -427,6 +495,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('autostart:set', (_event, enabled) => {
     return setAutoStart(enabled);
+  });
+
+  ipcMain.handle('locale:set', (_event, locale) => {
+    return setLocale(locale);
   });
 
   ipcMain.handle('updates:check', () => {
