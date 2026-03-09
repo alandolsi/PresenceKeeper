@@ -4,9 +4,6 @@ PresenceKeeper is a Windows desktop app (Electron + PowerShell) to keep activity
 
 If PresenceKeeper helps you, please support the project with a GitHub Star.
 
-## SEO Keywords
-Windows presence app, idle prevention tool, keep status active, activity scheduler, tray app for Windows, auto-start desktop app, Electron Windows app, keyboard activity automation
-
 ## Why PresenceKeeper
 - Fast `Start` / `Stop` runtime controls
 - Configurable interval (`30` to `900` seconds)
@@ -14,7 +11,7 @@ Windows presence app, idle prevention tool, keep status active, activity schedul
 - Runs in system tray
 - Optional Windows auto-start
 - Built-in update checks for installed releases
-- Multi-language UI: English, Deutsch, Français
+- Multi-language UI: English, Deutsch, Francais
 
 ## Features
 - Runtime dashboard with status and countdown
