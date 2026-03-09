@@ -10,14 +10,13 @@
   <main class="mx-auto max-w-6xl px-4 pb-8 pt-8 md:px-8">
     <header class="mb-6">
       <div class="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs tracking-[0.18em] text-sky-700">PRESENCEKEEPER</div>
-      <h1 class="mt-3 text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">Control Center</h1>
-      <p class="mt-2 text-slate-600">Modern desktop activity scheduler for Windows</p>
-      <p class="mt-1 text-xs text-slate-500">Version <span id="appVersion">-</span></p>
+      <h1 id="titleControlCenter" class="mt-3 text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">Control Center</h1>
+      <p id="subtitleApp" class="mt-2 text-slate-600">Modern desktop activity scheduler for Windows</p>
     </header>
 
     <div class="mb-4 inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
       <button id="tabDashboardBtn" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-700">Dashboard</button>
-      <button id="tabSettingsBtn" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-700">Einstellungen</button>
+      <button id="tabSettingsBtn" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-700">Settings</button>
     </div>
 
     <section id="tabDashboard" class="glass-card p-5">
@@ -25,12 +24,12 @@
         <div>
           <h2 class="text-lg font-semibold text-slate-900">
             <img src="icons/activity.svg" alt="" class="ui-icon mr-1" />
-            Runtime
+            <span id="runtimeTitle">Runtime</span>
           </h2>
-          <p class="text-sm text-slate-600">Manual start/stop with live countdown</p>
+          <p id="runtimeSubtitle" class="text-sm text-slate-600">Manual start/stop with live countdown</p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-          <div class="text-xs uppercase tracking-wide text-slate-500">Status</div>
+          <div id="statusLabel" class="text-xs uppercase tracking-wide text-slate-500">Status</div>
           <div class="mt-1 flex items-center gap-2">
             <span id="statusDot" class="h-2.5 w-2.5 rounded-full bg-slate-500"></span>
             <strong id="status" class="text-sm text-slate-800">Stopped</strong>
@@ -42,24 +41,24 @@
         <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-right md:max-w-xs md:ml-auto">
           <div class="text-xs uppercase tracking-wide text-slate-500">
             <img src="icons/clock-3.svg" alt="" class="ui-icon mr-1" />
-            Next tick
+            <span id="nextTickLabel">Next tick</span>
           </div>
           <div id="countdown" class="mt-1 text-2xl font-semibold text-sky-700">-</div>
         </div>
       </div>
 
       <div class="mt-6 flex flex-wrap items-center gap-4">
-        <button id="startBtn" class="orb-start">START</button>
-        <button id="stopBtn" class="orb-stop">STOP</button>
-        <p class="text-sm text-slate-600">Round controls with instant response and schedule fallback.</p>
+        <button id="startBtn" class="orb-start">Start</button>
+        <button id="stopBtn" class="orb-stop">Stop</button>
+        <p id="runtimeHint" class="text-sm text-slate-600">Round controls with instant response and schedule fallback.</p>
       </div>
 
       <div class="mt-6 flex items-center justify-between">
         <h2 class="text-lg font-semibold text-slate-900">
           <img src="icons/logs.svg" alt="" class="ui-icon mr-1" />
-          Event Log
+          <span id="eventLogTitle">Event Log</span>
         </h2>
-        <button id="toggleLogBtn" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700">Logs anzeigen</button>
+        <button id="toggleLogBtn" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700">Show logs</button>
       </div>
       <section id="logSection" class="hidden mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
         <pre id="log" class="max-h-64 min-h-44 overflow-auto text-xs text-slate-700"></pre>
@@ -70,22 +69,33 @@
       <section class="glass-card p-5 lg:col-span-2">
         <div class="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 class="text-lg font-semibold text-slate-900">Allgemein</h2>
-            <p class="text-sm text-slate-600">System- und Verhaltensoptionen</p>
+            <h2 id="generalTitle" class="text-lg font-semibold text-slate-900">General</h2>
+            <p id="generalSubtitle" class="text-sm text-slate-600">System and behavior options</p>
           </div>
         </div>
 
         <div class="mt-5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3">
           <label class="block">
-            <span class="mb-1 block text-sm text-slate-700">Interval (seconds)</span>
+            <span id="intervalLabel" class="mb-1 block text-sm text-slate-700">Interval (seconds)</span>
             <input id="interval" class="input-modern w-full md:w-56" type="number" min="30" max="900" value="240" />
           </label>
         </div>
 
         <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3">
+          <label class="mb-1 block text-sm text-slate-700">
+            <span id="languageLabel">Language</span>
+          </label>
+          <select id="languageSelect" class="input-modern w-full md:w-56">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+          </select>
+        </div>
+
+        <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3">
           <label class="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
             <input id="autostartEnabled" type="checkbox" class="h-4 w-4 rounded border-slate-300 bg-white" />
-            Start PresenceKeeper with Windows login
+            <span id="autostartLabel">Start PresenceKeeper with Windows login</span>
           </label>
         </div>
       </section>
@@ -93,26 +103,26 @@
       <section class="glass-card p-5">
         <h2 class="text-lg font-semibold text-slate-900">
           <img src="icons/calendar-clock.svg" alt="" class="ui-icon mr-1" />
-          Daily Schedule
+          <span id="dailyScheduleTitle">Daily Schedule</span>
         </h2>
-        <p class="text-sm text-slate-600">Automatic runtime window</p>
+        <p id="dailyScheduleSubtitle" class="text-sm text-slate-600">Automatic runtime window</p>
         <label class="mt-4 flex cursor-pointer items-center gap-2 text-sm">
           <input id="scheduleEnabled" type="checkbox" class="h-4 w-4 rounded border-slate-300 bg-white" />
-          Enable schedule
+          <span id="enableScheduleLabel">Enable schedule</span>
         </label>
         <div class="mt-4 space-y-3">
           <label class="block">
-            <span class="mb-1 block text-sm text-slate-700">Start time</span>
+            <span id="startTimeLabel" class="mb-1 block text-sm text-slate-700">Start time</span>
             <input id="startTime" class="input-modern w-full" type="time" value="08:30" />
           </label>
           <label class="block">
-            <span class="mb-1 block text-sm text-slate-700">Stop time</span>
+            <span id="stopTimeLabel" class="mb-1 block text-sm text-slate-700">Stop time</span>
             <input id="stopTime" class="input-modern w-full" type="time" value="17:30" />
           </label>
         </div>
         <button id="saveScheduleBtn" class="mt-4 w-full rounded-xl border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-semibold text-sky-800 transition hover:bg-sky-100">
           <img src="icons/save.svg" alt="" class="ui-icon mr-1" />
-          Save Schedule
+          <span id="saveScheduleLabel">Save Schedule</span>
         </button>
       </section>
     </section>

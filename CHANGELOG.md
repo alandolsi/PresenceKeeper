@@ -7,6 +7,15 @@ This project adheres to Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.2.6] - 2026-03-09
+### Added
+- Language switching with dedicated options for English, German, and French.
+
+### Changed
+- Localized the full renderer UI for EN/DE/FR.
+- Localized tray menu and Help menu labels for EN/DE/FR.
+- Removed the version line under the UI subtitle (version remains visible under `Help`).
+
 ## [0.2.5] - 2026-03-09
 ### Changed
 - Moved `Interval (seconds)` input from Dashboard to `Einstellungen` for cleaner runtime view.

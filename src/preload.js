@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('presenceApi', {
   stop: () => ipcRenderer.invoke('worker:stop'),
   setSchedule: (schedule) => ipcRenderer.invoke('schedule:set', schedule),
   setAutoStart: (enabled) => ipcRenderer.invoke('autostart:set', enabled),
+  setLocale: (locale) => ipcRenderer.invoke('locale:set', locale),
   checkForUpdates: () => ipcRenderer.invoke('updates:check'),
   installUpdate: () => ipcRenderer.invoke('updates:install'),
   onStateUpdate: (handler) => ipcRenderer.on('state:update', (_event, state) => handler(state)),
