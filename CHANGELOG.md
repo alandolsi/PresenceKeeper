@@ -7,6 +7,10 @@ This project adheres to Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.2.5] - 2026-03-09
+### Changed
+- Moved `Interval (seconds)` input from Dashboard to `Einstellungen` for cleaner runtime view.
+
 ## [0.2.4] - 2026-03-09
 ### Changed
 - Moved schedule controls into a dedicated `Einstellungen` tab.
