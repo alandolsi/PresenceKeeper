@@ -7,6 +7,10 @@ This project adheres to Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.2.9] - 2026-03-09
+### Fixed
+- Restored circular Start/Stop button rendering by reattaching the shared `orb-btn` base class in the renderer markup.
+
 ## [0.2.8] - 2026-03-09
 ### Fixed
 - Restored Start/Stop orb button styling to match the previous visual design after the Tailwind v4 migration.
