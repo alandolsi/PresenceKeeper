@@ -1,6 +1,6 @@
 {
   "name": "presencekeeper",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Windows desktop app to simulate periodic activity with start/stop and scheduling.",
   "main": "src/main.js",
   "icon": "build/icon.ico",
@@ -30,7 +30,7 @@
   "scripts": {
     "tray:icons": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build/generate-tray-icons.ps1",
     "icons:sync": "node ./scripts/sync-icons.mjs",
-    "css:build": "tailwindcss -c tailwind.config.js -i ./src/renderer/tailwind.input.css -o ./src/renderer/tailwind.css --minify",
+    "css:build": "node ./node_modules/@tailwindcss/cli/dist/index.mjs -i ./src/renderer/tailwind.input.css -o ./src/renderer/tailwind.css --minify",
     "predev": "npm run tray:icons && npm run icons:sync && npm run css:build",
     "dev": "electron .",
     "prebuild": "npm run tray:icons && npm run icons:sync && npm run css:build",
@@ -39,11 +39,12 @@
     "dist": "electron-builder"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
     "electron": "^40.8.0",
     "electron-builder": "^26.8.1",
     "lucide-static": "^0.577.0",
     "png-to-ico": "^3.0.1",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^4.1.13"
   },
   "build": {
     "appId": "de.landolsi.presencekeeper",
