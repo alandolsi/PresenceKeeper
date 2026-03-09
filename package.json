@@ -1,6 +1,6 @@
 {
   "name": "presencekeeper",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Windows desktop app to simulate periodic activity with start/stop and scheduling.",
   "main": "src/main.js",
   "icon": "build/icon.ico",
@@ -50,6 +50,9 @@
       "build/icon.ico",
       "build/tray-*.png",
       "package.json"
+    ],
+    "asarUnpack": [
+      "worker/**/*"
     ],
     "directories": {
       "buildResources": "build"

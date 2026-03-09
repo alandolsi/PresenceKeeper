@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('node:path');
+const fs = require('node:fs');
 const { spawn } = require('node:child_process');
 
 let mainWindow;
@@ -287,13 +288,31 @@ function parseWorkerLine(line) {
   }
 }
 
+function resolveWorkerScriptPath() {
+  const devPath = path.join(app.getAppPath(), 'worker', 'presence_worker.ps1');
+  if (!app.isPackaged) {
+    return devPath;
+  }
+
+  const unpackedPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'worker', 'presence_worker.ps1');
+  if (fs.existsSync(unpackedPath)) {
+    return unpackedPath;
+  }
+
+  // Fallback for unusual packaging/layout setups.
+  return devPath;
+}
+
 function startWorker(intervalSeconds) {
   if (workerProcess) return { ok: false, message: 'Already running.' };
   if (!Number.isFinite(intervalSeconds) || intervalSeconds < 30 || intervalSeconds > 900) {
     return { ok: false, message: 'Interval must be between 30 and 900 seconds.' };
   }
 
-  const scriptPath = path.join(app.getAppPath(), 'worker', 'presence_worker.ps1');
+  const scriptPath = resolveWorkerScriptPath();
+  if (!fs.existsSync(scriptPath)) {
+    return { ok: false, message: `Worker script not found: ${scriptPath}` };
+  }
   workerProcess = spawn('powershell.exe', [
     '-NoProfile',
     '-ExecutionPolicy', 'Bypass',

@@ -6,6 +6,8 @@ The format is based on Keep a Changelog.
 This project adheres to Semantic Versioning.
 
 ## [Unreleased]
+### Fixed
+- Packaged PowerShell worker path resolution by loading from `app.asar.unpacked` in installed builds.
 
 ## [0.2.2] - 2026-03-09
 ### Fixed
