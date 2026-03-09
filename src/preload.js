@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('presenceApi', {
+  getAppInfo: () => ipcRenderer.invoke('app:info'),
   getState: () => ipcRenderer.invoke('state:get'),
   start: (intervalSeconds) => ipcRenderer.invoke('worker:start', intervalSeconds),
   stop: () => ipcRenderer.invoke('worker:stop'),

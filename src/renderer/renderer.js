@@ -2,15 +2,19 @@ const statusEl = document.getElementById('status');
 const statusDotEl = document.getElementById('statusDot');
 const countdownEl = document.getElementById('countdown');
 const logEl = document.getElementById('log');
+const logSectionEl = document.getElementById('logSection');
+const toggleLogBtn = document.getElementById('toggleLogBtn');
+const appVersionEl = document.getElementById('appVersion');
+
+const tabDashboardBtn = document.getElementById('tabDashboardBtn');
+const tabSettingsBtn = document.getElementById('tabSettingsBtn');
+const tabDashboardEl = document.getElementById('tabDashboard');
+const tabSettingsEl = document.getElementById('tabSettings');
 
 const intervalEl = document.getElementById('interval');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const autoStartEnabledEl = document.getElementById('autostartEnabled');
-const checkUpdateBtn = document.getElementById('checkUpdateBtn');
-const installUpdateBtn = document.getElementById('installUpdateBtn');
-const updateStatusEl = document.getElementById('updateStatus');
-const updateVersionEl = document.getElementById('updateVersion');
 
 const scheduleEnabledEl = document.getElementById('scheduleEnabled');
 const startTimeEl = document.getElementById('startTime');
@@ -18,24 +22,30 @@ const stopTimeEl = document.getElementById('stopTime');
 const saveScheduleBtn = document.getElementById('saveScheduleBtn');
 
 let currentState = null;
+let logsVisible = false;
 
 function appendLog(line) {
   logEl.textContent += `${line}\n`;
   logEl.scrollTop = logEl.scrollHeight;
 }
 
-function updateUpdateSection(state) {
-  const updateState = state.update || { status: 'idle', version: null, error: null };
-  updateStatusEl.textContent = `Status: ${updateState.status}`;
-  updateVersionEl.textContent = updateState.version ? `Version: ${updateState.version}` : '';
-  if (updateState.error) {
-    appendLog(`Update error: ${updateState.error}`);
-  }
+function setLogsVisible(visible) {
+  logsVisible = !!visible;
+  logSectionEl.classList.toggle('hidden', !logsVisible);
+  toggleLogBtn.textContent = logsVisible ? 'Logs ausblenden' : 'Logs anzeigen';
+}
 
-  checkUpdateBtn.disabled = updateState.status === 'checking' || updateState.status === 'downloading';
-  installUpdateBtn.disabled = updateState.status !== 'downloaded';
-  checkUpdateBtn.classList.toggle('opacity-50', checkUpdateBtn.disabled);
-  installUpdateBtn.classList.toggle('opacity-50', installUpdateBtn.disabled);
+function switchTab(tab) {
+  const showDashboard = tab === 'dashboard';
+  tabDashboardEl.classList.toggle('hidden', !showDashboard);
+  tabSettingsEl.classList.toggle('hidden', showDashboard);
+
+  tabDashboardBtn.className = showDashboard
+    ? 'rounded-lg bg-sky-100 px-4 py-2 text-sm font-semibold text-sky-800'
+    : 'rounded-lg px-4 py-2 text-sm font-semibold text-slate-700';
+  tabSettingsBtn.className = showDashboard
+    ? 'rounded-lg px-4 py-2 text-sm font-semibold text-slate-700'
+    : 'rounded-lg bg-sky-100 px-4 py-2 text-sm font-semibold text-sky-800';
 }
 
 function renderState(state) {
@@ -53,7 +63,7 @@ function renderState(state) {
   startBtn.classList.toggle('cursor-not-allowed', state.running);
   stopBtn.classList.toggle('opacity-50', !state.running);
   stopBtn.classList.toggle('cursor-not-allowed', !state.running);
-  updateUpdateSection(state);
+  if (state.update?.error) appendLog(`Update error: ${state.update.error}`);
 }
 
 function updateCountdown() {
@@ -92,22 +102,19 @@ autoStartEnabledEl.addEventListener('change', async () => {
   if (!res.ok) appendLog(`Auto-start save failed: ${res.message}`);
 });
 
-checkUpdateBtn.addEventListener('click', async () => {
-  const res = await window.presenceApi.checkForUpdates();
-  if (!res.ok) appendLog(`Update check skipped: ${res.message}`);
-});
-
-installUpdateBtn.addEventListener('click', async () => {
-  const res = await window.presenceApi.installUpdate();
-  if (!res.ok) appendLog(`Install update failed: ${res.message}`);
-});
+toggleLogBtn.addEventListener('click', () => setLogsVisible(!logsVisible));
+tabDashboardBtn.addEventListener('click', () => switchTab('dashboard'));
+tabSettingsBtn.addEventListener('click', () => switchTab('settings'));
 
 window.presenceApi.onStateUpdate(renderState);
 window.presenceApi.onLogAppend(appendLog);
 
 (async function init() {
+  const info = await window.presenceApi.getAppInfo();
+  appVersionEl.textContent = info?.version || '-';
   const state = await window.presenceApi.getState();
   renderState(state);
-  appendLog('Application initialized.');
+  setLogsVisible(false);
+  switchTab('dashboard');
   setInterval(updateCountdown, 1000);
 })();
