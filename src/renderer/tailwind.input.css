@@ -20,6 +20,9 @@ body {
 }
 
 .orb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 7rem;
   height: 7rem;
   border-radius: 9999px;
@@ -27,9 +30,12 @@ body {
   color: #fff;
   font-size: 0.875rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.025em;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2), 0 2px 4px -2px rgba(15, 23, 42, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  user-select: none;
 }
 
 .orb-btn:hover {
@@ -46,7 +52,7 @@ body {
 }
 
 .orb-start:hover {
-  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3), 0 4px 6px -4px rgba(16, 185, 129, 0.3);
 }
 
 .orb-stop {
@@ -55,7 +61,7 @@ body {
 }
 
 .orb-stop:hover {
-  box-shadow: 0 8px 18px rgba(244, 63, 94, 0.35);
+  box-shadow: 0 10px 15px -3px rgba(244, 63, 94, 0.3), 0 4px 6px -4px rgba(244, 63, 94, 0.3);
 }
 
 .input-modern {
