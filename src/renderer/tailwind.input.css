@@ -1,41 +1,80 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "./**/*.{html,js}";
 
-@layer base {
-  body {
-    @apply m-0 text-slate-900;
-    font-family: "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
-    background:
-      radial-gradient(900px 380px at 8% -8%, rgba(79, 172, 254, 0.12), transparent 60%),
-      radial-gradient(850px 360px at 100% 0%, rgba(22, 163, 74, 0.1), transparent 58%),
-      linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
-    min-height: 100vh;
-  }
+body {
+  margin: 0;
+  color: #0f172a;
+  font-family: "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(900px 380px at 8% -8%, rgba(79, 172, 254, 0.12), transparent 60%),
+    radial-gradient(850px 360px at 100% 0%, rgba(22, 163, 74, 0.1), transparent 58%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  min-height: 100vh;
 }
 
-@layer components {
-  .glass-card {
-    @apply rounded-2xl border border-slate-200 bg-white/95 shadow-sm;
-  }
+.glass-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
 
-  .orb-btn {
-    @apply h-28 w-28 rounded-full border text-sm font-semibold tracking-wide text-white shadow-md transition duration-200;
-  }
+.orb-btn {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-  .orb-start {
-    @apply orb-btn border-emerald-700 bg-gradient-to-br from-emerald-500 to-emerald-700 hover:scale-105 hover:shadow-emerald-400/30 active:scale-95;
-  }
+.orb-btn:hover {
+  transform: scale(1.05);
+}
 
-  .orb-stop {
-    @apply orb-btn border-rose-700 bg-gradient-to-br from-rose-500 to-rose-700 hover:scale-105 hover:shadow-rose-400/30 active:scale-95;
-  }
+.orb-btn:active {
+  transform: scale(0.95);
+}
 
-  .input-modern {
-    @apply rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-sky-500;
-  }
+.orb-start {
+  border-color: #047857;
+  background: linear-gradient(135deg, #10b981, #047857);
+}
 
-  .ui-icon {
-    @apply inline-block h-4 w-4 align-middle;
-  }
+.orb-start:hover {
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
+}
+
+.orb-stop {
+  border-color: #be123c;
+  background: linear-gradient(135deg, #f43f5e, #be123c);
+}
+
+.orb-stop:hover {
+  box-shadow: 0 8px 18px rgba(244, 63, 94, 0.35);
+}
+
+.input-modern {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  background: #fff;
+  color: #0f172a;
+  padding: 0.5rem 0.75rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-modern:focus {
+  border-color: #0ea5e9;
+}
+
+.ui-icon {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: middle;
 }

@@ -7,6 +7,12 @@ This project adheres to Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.2.7] - 2026-03-09
+### Changed
+- Migrated renderer styling pipeline from Tailwind CSS v3 to Tailwind CSS v4.
+- Switched CSS build command to the Tailwind v4 CLI entrypoint.
+- Reworked custom component styles in `tailwind.input.css` to remove v3-only `@apply` patterns.
+
 ## [0.2.6] - 2026-03-09
 ### Added
 - Language switching with dedicated options for English, German, and French.
