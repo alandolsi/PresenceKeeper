@@ -17,6 +17,12 @@
   "keywords": [
     "electron",
     "windows",
+    "windows-presence",
+    "idle-prevention",
+    "status-keeper",
+    "activity-scheduler",
+    "tray-app",
+    "desktop-automation",
     "productivity",
     "presence",
     "automation"
