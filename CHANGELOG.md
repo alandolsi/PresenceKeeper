@@ -7,6 +7,10 @@ This project adheres to Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-03-10
+### Added
+- Added localized `Usage Notice` entry under the Help menu (EN/DE/FR) with concise compliance guidance.
+
 ## [0.2.9] - 2026-03-09
 ### Fixed
 - Restored circular Start/Stop button rendering by reattaching the shared `orb-btn` base class in the renderer markup.

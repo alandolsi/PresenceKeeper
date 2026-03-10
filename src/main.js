@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Tray, Menu, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, shell, dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('node:path');
 const fs = require('node:fs');
@@ -42,6 +42,9 @@ const I18N = {
     contactPage: 'Contact Page',
     writeEmail: 'Write Email',
     githubRepo: 'GitHub Repository',
+    usageNotice: 'Usage Notice',
+    usageNoticeTitle: 'Usage Notice',
+    usageNoticeText: 'Use this software only where permitted by your employer policies and local law.\n\nThis project does not support deceptive or policy-violating use.',
     trayStatus: 'Status',
     running: 'Running',
     stopped: 'Stopped',
@@ -58,6 +61,9 @@ const I18N = {
     contactPage: 'Kontaktseite',
     writeEmail: 'E-Mail schreiben',
     githubRepo: 'GitHub-Repository',
+    usageNotice: 'Nutzungshinweis',
+    usageNoticeTitle: 'Nutzungshinweis',
+    usageNoticeText: 'Nutze diese Software nur, wenn dies durch Arbeitgeberrichtlinien und lokale Gesetze erlaubt ist.\n\nDieses Projekt unterstützt keine täuschende oder richtlinienwidrige Nutzung.',
     trayStatus: 'Status',
     running: 'Aktiv',
     stopped: 'Gestoppt',
@@ -74,6 +80,9 @@ const I18N = {
     contactPage: 'Page de contact',
     writeEmail: 'Écrire un e-mail',
     githubRepo: 'Dépôt GitHub',
+    usageNotice: "Notice d'utilisation",
+    usageNoticeTitle: "Notice d'utilisation",
+    usageNoticeText: "Utilisez ce logiciel uniquement lorsque cela est autorisé par les règles de votre employeur et la loi locale.\n\nCe projet ne prend pas en charge une utilisation trompeuse ou contraire aux politiques.",
     trayStatus: 'Statut',
     running: 'Actif',
     stopped: 'Arrêté',
@@ -318,6 +327,17 @@ function createAppMenu() {
           label: t('installUpdate'),
           enabled: state.update.status === 'downloaded',
           click: () => installDownloadedUpdate()
+        },
+        {
+          label: t('usageNotice'),
+          click: () => {
+            dialog.showMessageBox({
+              type: 'info',
+              title: t('usageNoticeTitle'),
+              message: t('usageNoticeTitle'),
+              detail: t('usageNoticeText')
+            });
+          }
         },
         { type: 'separator' },
         { label: t('contactPage'), click: () => shell.openExternal('https://landolsi.de') },
