@@ -23,6 +23,16 @@ This project does not support deceptive or policy-violating use.
 - Local worker script orchestration via PowerShell
 - NSIS installer generation via `electron-builder`
 
+## Recommended Use Cases (Proper Use)
+- Keep your own workstation active during long reading or writing sessions.
+- Prevent unnecessary idle transitions during local presentations or demos.
+- Validate scheduling and tray behavior in QA/test environments.
+- Run controlled daily activity windows on personal devices.
+
+Proper use is essential:
+- Only use PresenceKeeper where permitted by employer policy, contract terms, and local law.
+- Do not use this app for deceptive, misleading, or policy-violating activity.
+
 ## Install (Windows)
 1. Open latest release:
    - `https://github.com/alandolsi/PresenceKeeper/releases/latest`
